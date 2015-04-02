@@ -16,6 +16,8 @@ return array(
     'import'=>array(
         'application.models.*',
         'application.components.*',
+        'application.extensions.sftp.*',
+        'application.extensions.YiiSolr.*',
     ),
 
     'params'=>array(

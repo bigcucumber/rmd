@@ -9,6 +9,28 @@
  * LastChange: 2015-04-02 10:28:51
  * History:
  */
+
+/* 获取用户配置的sftpComponents配置信息 */
+function getSftpComponent()
+{
+
+    $sftpComponents = array(
+        'class' => 'application.extensions.sftp.SftpComponent',
+        'host'=>'sftp.idc.webpowerchina.cn',
+        'port'=>22,
+        'username'=>'dma',
+        'password'=>'.U5x2OFjBwc7v',
+    );
+
+    // 用户设置了sftp配置,产生一个文件
+    if(file_exists(dirname(__FILE__) . '/../data/sftpConnConfig.php'))
+        $sftpConnConfig = require(dirname(__FILE__) . '/../data/sftpConnConfig.php');
+
+    // 合并用户配置的conn信息
+    $sftpComponents = isset($sftpConnConfig) ? array_merge($sftpComponents,$sftpConnConfig) : $sftpComponents;
+    return $sftpComponents;
+}
+
 return array(
     // application components
     'components'=>array(
@@ -16,6 +38,7 @@ return array(
             // enable cookie-based authentication
             'allowAutoLogin'=>true,
         ),
+
 
         // uncomment the following to enable URLs in path-format
         'urlManager'=>array(
@@ -61,6 +84,9 @@ return array(
                  */
             ),
         ),
+
+        // sftp component
+        'sftp' => getSftpComponent(),
     ),
 
 

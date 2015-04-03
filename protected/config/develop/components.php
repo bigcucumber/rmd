@@ -97,6 +97,16 @@ return array(
                 'path' => '/solr/UserinfoSource',
             ),
         ),
+        'solrItemlist' => array(
+            'class' => 'application.extensions.YiiSolr.ASolrConnection',
+            'clientOptions' => array(
+                'hostname' => '192.168.1.108',
+                'port' => '8983',
+                'path' => '/solr/ItemlistSource',
+            ),
+        ),
+
+
     ),
 
 

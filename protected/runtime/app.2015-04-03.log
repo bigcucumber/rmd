@@ -329,3 +329,6 @@ Stack trace:
 #9 {main}
 REQUEST_URI=/dataprocess/default/index
 ---
+2015/04/03 22:57:55 [error] [application] {"responseHeader":{"status":400,"QTime":5},"error":{"msg":"Document is missing mandatory uniqueKey field: email","code":400}}
+in D:\Workspace\php\sites\training-cn\rmd\protected\modules\dataprocess\controllers\DefaultController.php (49)
+in D:\Workspace\php\sites\training-cn\rmd\index.php (12)

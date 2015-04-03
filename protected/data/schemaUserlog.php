@@ -1,37 +1,36 @@
 <?php
 return array(
-    'username' => array(
-        'isRequire' => 0, /* 必须要的字段 */
-        'format' => 0,
-    ),
     'email' => array(
-        'isRequire' => 1,
+        'isRequire' => 1, /* 必须要的字段 */
         'format' => 0,
     ),
-    'mobile' => array(
+    'item_id' => array(
+        'isRequire' => 0,
+        'format' => 0,
+    ),
+    'type' => array(
         'isRequire' => 0,
         'format' => 0
     ),
-    'gender' => array(
+    'brand_di' => array(
         'isRequire' => 0,
         'format' => 0,
     ),
-    'province' => array(
+    'price_level' => array(
         'isRequire' => 0,
         'format' => 0,
     ),
-    'city' => array(
+    'tag_id' => array(
         'isRequire' => 0,
         'format' => 0,
     ),
-    'brithday' => array(
+    'action' => array(
         'isRequire' => 0,
-        'format' => 'date',
-        'formatString' => "yyyy/MM/dd  HH:m:ss"
+        'format' => 0,
     ),
-    'register_date' => array(
+    'timestamp' => array(
         'isRequire' => 0,
         'format' => 'date', /* 需要一date方式格式化 */
-        'formatString' => "yyyy-MM-dd HH:mm:ss"
+        'formatString' => "yyyy/M/d  HH:mm:ss"
     ),
 );

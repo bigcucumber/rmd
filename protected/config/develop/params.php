@@ -22,5 +22,11 @@ return array(
 
     'params'=>array(
         'adminEmail'=>'webmaster@example.com',
+
+        'solrConfig' => array(
+            'host' => 'http://192.168.1.108',
+            'port' => '8983',
+        ),
     ),
+
 );

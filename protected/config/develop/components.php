@@ -87,6 +87,16 @@ return array(
 
         // sftp component
         'sftp' => getSftpComponent(),
+
+        /* solr instance configure segment */
+        'solrUserinfo' => array(
+            'class' => 'application.extensions.YiiSolr.ASolrConnection',
+            'clientOptions' => array(
+                'hostname' => '192.168.1.108',
+                'port' => '8983',
+                'path' => '/solr/UserinfoSource',
+            ),
+        ),
     ),
 
 

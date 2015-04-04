@@ -1,37 +1,19 @@
 <?php
-
-// This is the configuration for yiic console application.
-// Any writable CConsoleApplication properties can be configured here.
-return array(
-	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Console Application',
-
-	// preloading 'log' component
-	'preload'=>array('log'),
-
-	// application components
-	'components'=>array(
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
-		// uncomment the following to use a MySQL database
-		/*
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
-			'charset' => 'utf8',
-		),
-		*/
-		'log'=>array(
-			'class'=>'CLogRouter',
-			'routes'=>array(
-				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
-				),
-			),
-		),
-	),
+/**
+ * FileName: main.php
+ * Description: 所有配置分开入口文件
+ * Author: Bigpao
+ * Email: bigpao.luo@gmail.com
+ * HomePage: 
+ * Version: 0.0.1
+ * LastChange: 2015-04-02 10:36:00
+ * History:
+ */
+$consoleConfig = CMap::mergeArray(
+    require(dirname(__FILE__).'/params.php'),
+    require(dirname(__FILE__).'/module.php'),
+    require(dirname(__FILE__).'/components.php')
 );
+
+//unset($consoleConfig['']);
+return $consoleConfig;

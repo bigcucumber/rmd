@@ -1,5 +1,6 @@
 #rmd
     Recommend System base userinfo.csv and userlog.csv
+    获取网站用户信息,记录用户浏览,购买,收藏,加入购物车的商品记录,计算出用户对商品的权重信息,计算后根据用户权重,自定一的推荐商品.
 
     #2015-04-01
         * CSVSource.php csv数据基类

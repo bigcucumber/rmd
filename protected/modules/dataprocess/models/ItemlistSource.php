@@ -53,19 +53,31 @@ class ItemlistSource extends CSVSource
         foreach($itemlistCategoryConfig['fields'] as $key => $value)
         {
             // 取出该商品的类别值做为分类的键名
-            if(isset($value['conditions']))
+            if(isset($value['mapper']) && isset($value['conditions']))
             {
-                $conditionKey .= call_user_func(array($this,$value['mapper']),array('conditions' => $value['conditions'],'value' => $item[$key])) . self::TAG_SEPARATE;
+                $conditionKey .= call_user_func(
+                    array($this,$value['mapper']),
+                    array('conditions' => $value['conditions'],'value' => $item[$key])
+                ) . self::TAG_SEPARATE;
             }
             else
             {
-                if(empty($item[$key])) continue;
-                $conditionKey .= $item[$key] . self::TAG_SEPARATE;
+                if(empty($item[$key])) continue; // 不存在的字段,需要干掉
+                if(isset($value['mapper'])) // 有对该数据字段处理的
+                    $conditionKey .= call_user_func(
+                        array($this, $value['mapper']),
+                        $key,
+                        $item
+                    ) . self::TAG_SEPARATE;
+                else
+                    $conditionKey .= $item[$key] . self::TAG_SEPARATE;
             }
         }
 
         $conditions['key'] = trim($conditionKey,self::TAG_SEPARATE);
-        $conditions['value'] = $item;
+
+        $itemlistDao = new ItemlistDao();
+        $conditions['value'] = $item[$itemlistDao -> primaryKey()];
         return $conditions;
     }
 
@@ -91,11 +103,12 @@ class ItemlistSource extends CSVSource
 
     /**
      * 根据价格定义该商品在那个区间
-     * @param array $args 区间参数和需要比较的值
+     * @param string $key 该字段
+     * @param array $value 该字段在csv对应行的值
      * @return string 返回区间的值
      */
-    public function trimSpace($args)
+    public function trimSpace($key, $value)
     {
-        var_dump($args);
+        return preg_replace('/\s/', '_', trim(strtolower($value[$key])));
     }
 }

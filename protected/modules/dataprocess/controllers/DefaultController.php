@@ -43,7 +43,8 @@ class DefaultController extends Controller
                 //$solrUtils -> solrSimpletools(CJSON::encode($result)); /* post 数据到solr */
 
                 echo '<pre>';
-                print_r($itemlist -> category());
+                $result = $itemlist -> category();
+                print_r($result);
 
 
 

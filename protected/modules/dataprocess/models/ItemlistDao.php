@@ -24,7 +24,7 @@ class ItemlistDao extends ASolrDocument
      */
     public function getSolrConnection() 
     {
-        return Yii::app() -> solrUserinfo;
+        return Yii::app() -> solrItemlist;
     }
 
     public function primaryKey()

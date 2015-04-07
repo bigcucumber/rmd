@@ -92,7 +92,7 @@ return array(
         'solrUserinfo' => array(
             'class' => 'application.extensions.YiiSolr.ASolrConnection',
             'clientOptions' => array(
-                'hostname' => '192.168.1.108',
+                'hostname' => '192.168.3.143',
                 'port' => '8983',
                 'path' => '/solr/UserinfoSource',
             ),
@@ -100,7 +100,7 @@ return array(
         'solrItemlist' => array(
             'class' => 'application.extensions.YiiSolr.ASolrConnection',
             'clientOptions' => array(
-                'hostname' => '192.168.1.108',
+                'hostname' => '192.168.3.143',
                 'port' => '8983',
                 'path' => '/solr/ItemlistSource',
             ),

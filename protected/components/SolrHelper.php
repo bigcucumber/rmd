@@ -37,6 +37,7 @@ class SolrHelper
      */
     public function solrSimpletools($contents, $commit = true, $wt = "json")
     {
+        //echo $contents;exit;
         /* solr client configure */
         $instanceConfig = $this -> _instance -> getSolrConnection() -> clientOptions;
         $solrHost = rtrim(Yii::app() -> params['solrConfig']['host']);

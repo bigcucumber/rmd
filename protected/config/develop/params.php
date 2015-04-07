@@ -24,8 +24,28 @@ return array(
         'adminEmail'=>'webmaster@example.com',
 
         'solrConfig' => array(
-            'host' => 'http://192.168.1.108',
+            //'host' => 'http://192.168.1.108',
+            'host' => 'http://192.168.3.143',
             'port' => '8983',
+        ),
+
+        /* 商品分类纬度 */
+        'itemlistCategory' => array(
+            'fields' => array(
+                'type' => array(
+                    'mapper' => 'trimSpace'
+                ),
+                'price3' => array(
+                    'mapper' => 'priceRange', // 处理方法
+                    'conditions' => array( // 处理条件
+                        'segment1' => 80,
+                        'segment2' => 200,
+                        'segment3' => 500,
+                        'segment4' => 1000,
+                        'segment5' => 1000000000000000000
+                    ),
+                ),
+            ),
         ),
     ),
 

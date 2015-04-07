@@ -16,6 +16,7 @@ class DefaultController extends Controller
                 $userinfo -> download('userinfo_2015-04-01.csv','/cardletter/data/');
                 $result = $userinfo -> readCsv();
 
+
                 $userinfoDao = new UserinfoDao();
                 $solrUtils = new SolrHelper($userinfoDao);
                 $solrUtils -> solrSimpletools(CJSON::encode($result)); /* post 数据到solr */
@@ -36,15 +37,20 @@ class DefaultController extends Controller
                 $itemlist -> download('itemlist_source_2015-04-01.csv','/cardletter/data/');
                 $result = $itemlist -> readCsv();
 
-
                 /* POST 数据到solr中 */
-                $itemlistDao = new ItemlistDao();
-                $solrUtils = new SolrHelper($itemlistDao);
-                $solrUtils -> solrSimpletools(CJSON::encode($result)); /* post 数据到solr */
+                //$itemlistDao = new ItemlistDao();
+                //$solrUtils = new SolrHelper($itemlistDao);
+                //$solrUtils -> solrSimpletools(CJSON::encode($result)); /* post 数据到solr */
+
+                echo '<pre>';
+                print_r($itemlist -> category());
+
+
 
             }
             catch(Exception $e)
             {
+                throw $e;
                 $itemlist -> totalRow = -1;
                 Yii::log($e -> getMessage(), "error");
             }
@@ -58,8 +64,6 @@ class DefaultController extends Controller
             $result = $userlog -> readCsv();
             echo '<pre>';
             print_r($result);
-
-
         }
     }
 

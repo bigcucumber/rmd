@@ -127,6 +127,7 @@ class UserlogSource extends CSVSource
 
             }
         }
+
         return $this -> _tidyData = $result;
     }
 

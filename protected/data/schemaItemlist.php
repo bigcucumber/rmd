@@ -45,7 +45,7 @@ return array(
         'format' => 0,
     ),
     'type' => array(
-        'isRequire' => 1,
+        'isRequire' => 0,
         'format' => 0,
     ),
     'brand' => array(

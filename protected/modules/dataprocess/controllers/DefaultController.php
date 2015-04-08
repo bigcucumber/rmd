@@ -9,20 +9,23 @@ class DefaultController extends Controller
 
         /* 获取sftp配置信息 */
         $sftpDataConfig = $this -> getftpDataConfig();
-        $relativePath = '/' . trim($sftpDataConfig,'/') . '/';
+        $relativePath = '/' . trim($sftpDataConfig['dataStorePath'], '/') . '/';
         $nowTime = date("Y-m-d",time());
-        $userinfo = str_replace('date', $nowTime, $sftpDataConfig['userinfoSource']);
+        $nowTime = "2015-04-01";
+
+        $userinfoSource = str_replace('date', $nowTime, $sftpDataConfig['userinfoSource']);
         $userlogSource = str_replace('date', $nowTime, $sftpDataConfig['userlogSource']);
         $itemlistSource = str_replace('date', $nowTime, $sftpDataConfig['itemlistSource']);
 
+
         $solrUtils = new SolrHelper();
-        //if(false)
+        if(false)
         {
             try
             {
                 $sftp = Yii::app() -> sftp;
                 $userinfo = new UserinfoSource($sftp);
-                $userinfo -> download($userinfo, $relativePath);
+                $userinfo -> download($userinfoSource, $relativePath);
                 $result = $userinfo -> readCsv();
 
                 $userinfoDao = new UserinfoDao();
@@ -35,7 +38,7 @@ class DefaultController extends Controller
                 Yii::log($e -> getMessage(), "error");
             }
         }
-        //if(false)
+        if(false)
         {
             //echo CDateTimeParser::parse('2015/4/3  16:00:00',"yyyy/M/d  HH:mm:ss");exit;
             try
@@ -71,6 +74,9 @@ class DefaultController extends Controller
                 $userlog = new UserlogSource($sftp);
                 $userlog -> download($userlogSource, $relativePath);
                 $userlog -> readCsv();
+
+                echo '<pre>';print_r($userlog -> tidyUserlog());exit;
+
                 $result = $userlog -> updateUserinfoSource();
 
                 $userinfoDao = new UserinfoDao();
@@ -112,7 +118,7 @@ class DefaultController extends Controller
                 $sumUserinfoCnt = ($sumCntObj == null) ? 0 : $sumCntObj -> sum_userinfo_cnt; // 记录总数
             }
 
-            $todayUserinfoCnt = ($userinfo -> userinfo_cnt >= 0) ? $statisticDao -> userinfo_cnt : 0; // 记录今天数
+            $todayUserinfoCnt = ($userinfo -> totalRow >= 0) ? $statisticDao -> userinfo_cnt : 0; // 记录今天数
             $statisticDao -> sum_userinfo_cnt = $sumUserinfoCnt + $todayUserinfoCnt;
 
             if(!$statisticDao -> save())

@@ -76,7 +76,8 @@ class ItemlistSource extends CSVSource
             }
             else
             {
-                if(empty($item[$key])) continue; // 不存在的字段,需要干掉
+                //if(empty($item[$key])) continue; // 不存在的字段,需要干掉
+                $item[$key] = ($item[$key] == '') ? 'null' : $item[$key];
                 if(isset($value['mapper'])) // 有对该数据字段处理的
                     $conditionKey .= call_user_func(
                         array($this, $value['mapper']),

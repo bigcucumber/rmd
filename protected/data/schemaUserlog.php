@@ -12,7 +12,7 @@ return array(
         'isRequire' => 0,
         'format' => 0
     ),
-    'brand_di' => array(
+    'brand_id' => array(
         'isRequire' => 0,
         'format' => 0,
     ),
@@ -27,6 +27,12 @@ return array(
     'action' => array(
         'isRequire' => 0,
         'format' => 0,
+        'behaviour' => array(
+            'view' => 1,
+            'store' => 1,
+            'buy' => 2,
+            'cart' => 1
+        )
     ),
     'timestamp' => array(
         'isRequire' => 0,

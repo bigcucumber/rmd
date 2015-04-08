@@ -32,12 +32,26 @@ class ItemlistSource extends CSVSource
         $categoryItems = array();
         if(empty($this -> _validData))
             throw new Exception('please download csv and read csv first');
+        $nowTime = date("Ymd",time());
+
+        /* 分类 */
         foreach($this -> _validData as $key => $value)
         {
             $result = $this -> itemFilter($value);
             $categoryItems[$result['key']][] = $result['value'];
         }
-        return $categoryItems;
+
+        /* 构造AdOrderItemSource 需要的数组 */
+        $adOrderItemSourceArr = array();
+        foreach($categoryItems as $key => $value)
+        {
+            $adOrderItemSourceArr[] = array(
+                'id' => $key,
+                'item_ids' => $value,
+                'timestamp' => $nowTime
+            );
+        }
+        return $adOrderItemSourceArr;
     }
 
     /**

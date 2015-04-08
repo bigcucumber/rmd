@@ -85,6 +85,10 @@ return array(
             ),
         ),
 
+        /* 默认文件缓存 */
+         'cache' => array(
+            'class' => 'CFileCache',
+        ),
         // sftp component
         'sftp' => getSftpComponent(),
 
@@ -103,6 +107,14 @@ return array(
                 'hostname' => '192.168.3.143',
                 'port' => '8983',
                 'path' => '/solr/ItemlistSource',
+            ),
+        ),
+        'solrAdOrderItem' => array(
+            'class' => 'application.extensions.YiiSolr.ASolrConnection',
+            'clientOptions' => array(
+                'hostname' => '192.168.3.143',
+                'port' => '8983',
+                'path' => '/solr/AdOrderItemSource',
             ),
         ),
 

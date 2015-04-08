@@ -27,7 +27,7 @@ class DefaultController extends Controller
                 Yii::log($e -> getMessage(), "error");
             }
         }
-        //if(false)
+        if(false)
         {
             //echo CDateTimeParser::parse('2015/4/3  16:00:00',"yyyy/M/d  HH:mm:ss");exit;
             try
@@ -38,15 +38,14 @@ class DefaultController extends Controller
                 $result = $itemlist -> readCsv();
 
                 /* POST 数据到solr中 */
-                //$itemlistDao = new ItemlistDao();
-                //$solrUtils = new SolrHelper($itemlistDao);
-                //$solrUtils -> solrSimpletools(CJSON::encode($result)); /* post 数据到solr */
+                $itemlistDao = new ItemlistDao();
+                $solrUtils = new SolrHelper($itemlistDao);
+                $solrUtils -> solrSimpletools(CJSON::encode($result)); /* post 数据到solr */
 
-                echo '<pre>';
-                $result = $itemlist -> category();
-                print_r($result);
-
-
+                $adOrderItemArr = $itemlist -> category();
+                $adOrderItemDao = new AdOrderItemDao();
+                $solrUtils -> setInstance($adOrderItemDao);
+                $solrUtils -> solrSimpletools(CJSON::encode($adOrderItemArr)); /* post adOrderItem数据到solr */
 
             }
             catch(Exception $e)
@@ -57,14 +56,13 @@ class DefaultController extends Controller
             }
         }
 
-        if(false)
+        //if(false)
         {
             $sftp = Yii::app() -> sftp;
             $userlog = new UserlogSource($sftp);
             $userlog -> download('userlog_2015-04-01.csv','/cardletter/data/');
             $result = $userlog -> readCsv();
-            echo '<pre>';
-            print_r($result);
+            $userlog -> updateUserinfoSource();
         }
     }
 

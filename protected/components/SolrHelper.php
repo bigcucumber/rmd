@@ -28,6 +28,25 @@ class SolrHelper
     }
 
     /**
+     * 获取solrHelper需要推送的实例
+     * @reutrn object $instance
+     */
+    public function getInstance()
+    {
+        return $this -> _instance;
+    }
+
+    /**
+     * 设置solrHelper需要推送的实例
+     * @param object 对应的solrDao模型
+     * @return null
+     */
+    public function setInstance($instance)
+    {
+        $this -> _instance = $instance;
+    }
+
+    /**
      * 仿command line simple post tool
      * @param string $contents 需要post的数据
      * @param boolean $commit 是否提交

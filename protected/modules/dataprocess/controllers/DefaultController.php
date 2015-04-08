@@ -114,7 +114,7 @@ class DefaultController extends Controller
 
         }
 
-        Yii::app() -> end();
+        Yii::app() -> end("ok");
 
     }
 

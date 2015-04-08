@@ -117,6 +117,14 @@ return array(
                 'path' => '/solr/AdOrderItemSource',
             ),
         ),
+        'solrStatistic' => array(
+            'class' => 'application.extensions.YiiSolr.ASolrConnection',
+            'clientOptions' => array(
+                'hostname' => '192.168.3.143',
+                'port' => '8983',
+                'path' => '/solr/StatisticSource',
+            ),
+        ),
 
 
     ),

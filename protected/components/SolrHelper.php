@@ -22,7 +22,7 @@ class SolrHelper
      * @param 对应的solr实例
      * @return null;
      */
-    public function __construct($instance)
+    public function __construct($instance = "")
     {
         $this -> _instance = $instance;
     }
@@ -70,8 +70,9 @@ class SolrHelper
         $result = curl_exec($ch);
 
         $arrRes = CJSON::decode($result);
-        if($arrRes['responseHeader']['status'] != 0)
-            throw new Exception(json_encode($arrRes));
+        Yii::log(json_encode($arrRes), 'error');
+        //if($arrRes['responseHeader']['status'] != 0)
+            //throw new Exception(json_encode($arrRes));
     }
 }
 

@@ -141,10 +141,12 @@ class UserlogSource extends CSVSource
         foreach($data as $email => $value)
         {
             $temp = array();
+            $userinfo = array('email' => $email);
             foreach($value as $k => $v)
             {
                 if($k == 'tag')
                 {
+                    $userinfo['weight'] = $this -> getWeight($email, $v);
                     continue;
                 }
                 foreach($v as $n => $m)
@@ -152,12 +154,34 @@ class UserlogSource extends CSVSource
                     $temp[$n.'_'.$k] = $m;
                 }
             }
-            $result[] = array_merge($temp,array('email' => $email));
+            $result[] = array_merge($temp,$userinfo);
         }
-        echo '<pre>';
-        print_r($result);
-        exit;
+        return $result;
     }
+
+    /**
+     * 获取用户权限,判断用户是否已存在
+     * @param array $tag tag信息
+     * @param string $email 用户邮箱
+     * @return json 用户权重json信息
+     */
+    public function getWeight($email,$tag)
+    {
+
+        $originWeight = $tag;
+
+        $userinfoDao = new UserinfoDao();
+        $userinfoDaoObj = $userinfoDao -> findByPk($email);
+
+        $olderWeight = array();
+        if($userinfoDaoObj != null && property_exists($userinfoDaoObj, 'weight'))
+            $olderWeight = CJSON::decode($userinfoDaoObj -> weight);
+
+        return $weight = CJSON::encode(
+            WeightHelper::getNewWeight($olderWeight, $originWeight)
+        );
+    }
+
 
     /**
      * 获取用户配置信息

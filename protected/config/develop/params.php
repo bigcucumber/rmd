@@ -16,6 +16,7 @@ return array(
     'import'=>array(
         'application.models.*',
         'application.components.*',
+        'application.modules.dataprocess.models.*',
         'application.extensions.sftp.*',
         'application.extensions.YiiSolr.*',
     ),
@@ -47,6 +48,8 @@ return array(
                 ),
             ),
         ),
+
+        'alpha' => 0.2, /* 用户权重系数 */
     ),
 
 );

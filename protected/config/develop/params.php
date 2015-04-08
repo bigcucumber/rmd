@@ -26,7 +26,7 @@ return array(
 
         'solrConfig' => array(
             //'host' => 'http://192.168.1.108',
-            'host' => 'http://192.168.3.143',
+            'host' => 'http://192.168.1.108',
             'port' => '8983',
         ),
 

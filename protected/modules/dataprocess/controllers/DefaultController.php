@@ -2,21 +2,27 @@
 
 class DefaultController extends Controller
 {
-	public function actionStart()
-	{
+    public function actionStart()
+    {
         set_time_limit(0);
         ini_set("memory_limit","-1");
 
+        /* 获取sftp配置信息 */
+        $sftpDataConfig = $this -> getftpDataConfig();
+        $relativePath = '/' . trim($sftpDataConfig,'/') . '/';
+        $nowTime = date("Y-m-d",time());
+        $userinfo = str_replace('date', $nowTime, $sftpDataConfig['userinfoSource']);
+        $userlogSource = str_replace('date', $nowTime, $sftpDataConfig['userlogSource']);
+        $itemlistSource = str_replace('date', $nowTime, $sftpDataConfig['itemlistSource']);
 
         $solrUtils = new SolrHelper();
-
         //if(false)
         {
             try
             {
                 $sftp = Yii::app() -> sftp;
                 $userinfo = new UserinfoSource($sftp);
-                $userinfo -> download('userinfo_2015-04-01.csv','/cardletter/data/');
+                $userinfo -> download($userinfo, $relativePath);
                 $result = $userinfo -> readCsv();
 
                 $userinfoDao = new UserinfoDao();
@@ -36,7 +42,7 @@ class DefaultController extends Controller
             {
                 $sftp = Yii::app() -> sftp;
                 $itemlist = new ItemlistSource($sftp);
-                $itemlist -> download('itemlist_source_2015-04-01.csv','/cardletter/data/');
+                $itemlist -> download($itemlistSource, $relativePath);
                 $result = $itemlist -> readCsv();
 
                 /* POST 数据到solr中 */
@@ -63,7 +69,7 @@ class DefaultController extends Controller
             {
                 $sftp = Yii::app() -> sftp;
                 $userlog = new UserlogSource($sftp);
-                $userlog -> download('userlog_2015-04-01.csv','/cardletter/data/');
+                $userlog -> download($userlogSource, $relativePath);
                 $userlog -> readCsv();
                 $result = $userlog -> updateUserinfoSource();
 
@@ -118,5 +124,23 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * 获取用户配置信息
+     * @return array $config
+     */
+    protected function getftpDataConfig()
+    {
+        $basePath = Yii::app() -> getBasePath();
+        $configPath = $basePath . '/data/sftpDataConfig.php';
+        if(!file_exists($configPath))
+            throw new Exception('the sftp configure file is not under data directory check it');
+        return require($configPath);
+    }
+
+    public function actionIndex()
+    {
+        $result = $this -> getftpDataConfig();
+        echo '<pre>'; print_r($result);exit;
+    }
 
 }

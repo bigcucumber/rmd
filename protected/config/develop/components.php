@@ -96,7 +96,7 @@ return array(
         'solrUserinfo' => array(
             'class' => 'application.extensions.YiiSolr.ASolrConnection',
             'clientOptions' => array(
-                'hostname' => '192.168.3.143',
+                'hostname' => '192.168.1.108',
                 'port' => '8983',
                 'path' => '/solr/UserinfoSource',
             ),
@@ -104,7 +104,7 @@ return array(
         'solrItemlist' => array(
             'class' => 'application.extensions.YiiSolr.ASolrConnection',
             'clientOptions' => array(
-                'hostname' => '192.168.3.143',
+                'hostname' => '192.168.1.108',
                 'port' => '8983',
                 'path' => '/solr/ItemlistSource',
             ),
@@ -112,7 +112,7 @@ return array(
         'solrAdOrderItem' => array(
             'class' => 'application.extensions.YiiSolr.ASolrConnection',
             'clientOptions' => array(
-                'hostname' => '192.168.3.143',
+                'hostname' => '192.168.1.108',
                 'port' => '8983',
                 'path' => '/solr/AdOrderItemSource',
             ),
@@ -120,7 +120,7 @@ return array(
         'solrStatistic' => array(
             'class' => 'application.extensions.YiiSolr.ASolrConnection',
             'clientOptions' => array(
-                'hostname' => '192.168.3.143',
+                'hostname' => '192.168.1.108',
                 'port' => '8983',
                 'path' => '/solr/StatisticSource',
             ),

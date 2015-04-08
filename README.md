@@ -19,3 +19,6 @@
 ##2015-04-07
     * solr配置,solr中的uniqeKey不能是int类型
     * 可以将userinfo.csv,itemlist_source.csv数据导入到solr服务器中
+
+##2015-04-08
+    * 处理csv过程完成,solr core设计完成

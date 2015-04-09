@@ -21,6 +21,12 @@ class UserlogSource extends CSVSource
      */
     protected $_tidyData = null;
 
+
+    /**
+     * 根据用户条件合并成的tag分割符号
+     */
+    const TAG_SEPARATE = "#";
+
     /**
      * 获取整理好的数据
      */
@@ -89,6 +95,7 @@ class UserlogSource extends CSVSource
         $result = array();
         $allConfig = $this -> getSchemaConfig(); /* array('index' => 6, 'behaviour' => array('biew','buy'....)) */
 
+        $itemlistDao = ItemlistDao::model();
         foreach($this -> _validData as $value)
         {
             $action = strtolower(trim($value['action']));
@@ -96,18 +103,21 @@ class UserlogSource extends CSVSource
             {
                 if($action == $actSet)
                 {
-                    $item_id = $value['item_id'];
-                    if($item_id == '') /* 用户没有记录,随机赋值一条记录 */
+                    $item_id = ($value['item_id'] == '') ? 0 : $value['item_id'];
+                    $itemObj = $itemlistDao -> findByPk($item_id);
+                    if($itemObj == null) /* 用户没有记录,随机赋值一条记录 */
                     {
-                        if(!$item_id = ApplicationHelper::getState('random_item_id'))
+                        if(!$itemObj = ApplicationHelper::getState('random_item_obj'))
                         {
                             $oCriteria = new ASolrCriteria();
                             $oCriteria -> query = "*";
                             $oCriteria -> setLimit(1);
-                            $item_id = ItemlistDao::model() -> find($oCriteria) -> item_id;
-                            ApplicationHelper::setState('random_item_id',$item_id,3600*14);
+                            $itemObj = $itemlistDao -> find($oCriteria);
+                            ApplicationHelper::setState('random_item_obj',$itemObj,3600*14);
                         }
                     }
+
+                    $item_id = $itemObj -> item_id;
 
                     /* $result[trim($value['email'])]['action'][$action]数组不存在,或则item_id不存在数组中,添加 */
                     if(!isset($result[trim($value['email'])]['action'][$action]) || !in_array($item_id, $result[trim($value['email'])]['action'][$action]))
@@ -115,10 +125,15 @@ class UserlogSource extends CSVSource
 
                     /* 添加行为的时间 */
                     if(!isset($result[trim($value['email'])]['timelog'][$action]) || !in_array($value['timestamp'], $result[trim($value['email'])]['timelog'][$action]))
-                    $result[trim($value['email'])]['timelog'][$action][] = $value['timestamp'];
+                        $result[trim($value['email'])]['timelog'][$action][] = $value['timestamp'];
 
                     /* 添加分类信息 */
-                    $type = ($value['type'] == '') ? 'null' : preg_replace('/\s/', '_',strtolower($value['type'])); /* 得到用户分类,没有分类为null */
+                   #$type = $value['type']; /* 用户行为中没有type字段,根据item_id去itemlist中获取type */
+                   #if($type == '')
+                   #    $type = ($itemObj -> type == '') ? 'null' : $itemObj -> type;
+                   #$type = preg_replace('/\s/', '_',strtolower($value['type'])); /* 得到用户分类,没有分类为null */
+                    $type = $this -> itemFilter($itemObj);
+
                     if(!isset($result[trim($value['email'])]['tag'][$type]))
                         $result[trim($value['email'])]['tag'][$type] = 0;
                     $result[trim($value['email'])]['tag'][$type] += $weight;
@@ -129,6 +144,44 @@ class UserlogSource extends CSVSource
         }
 
         return $this -> _tidyData = $result;
+    }
+
+    /**
+     * 根据用户自定义条件分类
+     * @param array $item 单行csv记录的数组
+     * @return array $result
+     */
+    protected function itemFilter($item)
+    {
+        $itemlistCategoryConfig = Yii::app() -> params['itemlistCategory'];
+        $conditionKey = '';
+        foreach($itemlistCategoryConfig['fields'] as $key => $value)
+        {
+            // 取出该商品的类别值做为分类的键名
+            if(isset($value['mapper']) && isset($value['conditions']))
+            {
+                $conditionKey .= call_user_func(
+                    array($this,$value['mapper']),
+                    array('conditions' => $value['conditions'],'value' => $item[$key])
+                ) . self::TAG_SEPARATE;
+            }
+            else
+            {
+                //if(empty($item[$key])) continue; // 不存在的字段,需要干掉
+                $item[$key] = ($item[$key] == '') ? 'null' : $item[$key];
+                if(isset($value['mapper'])) // 有对该数据字段处理的
+                    $conditionKey .= call_user_func(
+                        array($this, $value['mapper']),
+                        $key,
+                        $item
+                    ) . self::TAG_SEPARATE;
+                else
+                    $conditionKey .= $item[$key] . self::TAG_SEPARATE;
+            }
+        }
+
+        return trim($conditionKey,self::TAG_SEPARATE);
+
     }
 
     /**

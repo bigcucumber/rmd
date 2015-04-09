@@ -85,6 +85,7 @@ class DefaultController extends Controller
             }
             catch(Exception $e)
             {
+                throw $e;
                 $userlog -> totalRow = -1;
                 Yii::log($e -> getMessage(), 'error');
             }
@@ -93,7 +94,7 @@ class DefaultController extends Controller
 
 
         /* 记录日志中 */
-        //if(false)
+        if(false)
         {
             $statisticDao = new StatisticDao();
             $id = date("Ymd",strtotime("-1 day",time()));
@@ -145,6 +146,9 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
+        $res = Yii::app() -> getComponent('solrItemlist');
+        var_dump($res);
+        exit;
         $result = $this -> getftpDataConfig();
         echo '<pre>'; print_r($result);exit;
     }

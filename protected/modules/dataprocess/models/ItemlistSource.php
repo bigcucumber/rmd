@@ -96,34 +96,5 @@ class ItemlistSource extends CSVSource
         return $conditions;
     }
 
-    /**
-     * 根据价格定义该商品在那个区间
-     * @param array $args 区间参数和需要比较的值
-     * @return string 返回区间的值
-     */
-    public function priceRange($args)
-    {
-        foreach($args['conditions'] as $key => $value)
-        {
-            if($args['value'] <= $value)
-                return $key;
-            else
-            {
-                unset($args['conditions'][$key]);
-                return $key = $this -> priceRange($args);
-            }
-        }
-    }
 
-
-    /**
-     * 根据价格定义该商品在那个区间
-     * @param string $key 该字段
-     * @param array $value 该字段在csv对应行的值
-     * @return string 返回区间的值
-     */
-    public function trimSpace($key, $value)
-    {
-        return preg_replace('/\s/', '_', trim(strtolower($value[$key])));
-    }
 }

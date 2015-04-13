@@ -19,7 +19,7 @@ class DefaultController extends Controller
 
 
         $solrUtils = new SolrHelper();
-        if(false)
+        //if(false)
         {
             try
             {
@@ -38,7 +38,7 @@ class DefaultController extends Controller
                 Yii::log($e -> getMessage(), "error");
             }
         }
-        if(false)
+        //if(false)
         {
             //echo CDateTimeParser::parse('2015/4/3  16:00:00',"yyyy/M/d  HH:mm:ss");exit;
             try
@@ -93,7 +93,7 @@ class DefaultController extends Controller
 
 
         /* 记录日志中 */
-        if(false)
+        //if(false)
         {
             $statisticDao = new StatisticDao();
             $id = date("Ymd",strtotime("-1 day",time()));

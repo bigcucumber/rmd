@@ -10,7 +10,7 @@
  * History:
  */
 return CMap::mergeArray(
-    require(dirname(__FILE__).'/params.php'),
+    require(dirname(__FILE__).'/require.php'),
     require(dirname(__FILE__).'/module.php'),
     require(dirname(__FILE__).'/components.php')
 );

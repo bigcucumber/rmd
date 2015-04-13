@@ -75,8 +75,7 @@ class DefaultController extends Controller
                 $userlog -> download($userlogSource, $relativePath);
                 $userlog -> readCsv();
 
-                echo '<pre>';print_r($userlog -> tidyUserlog());exit;
-
+                //echo '<pre>';print_r($userlog -> tidyUserlog());exit;
                 $result = $userlog -> updateUserinfoSource();
 
                 $userinfoDao = new UserinfoDao();

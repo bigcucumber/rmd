@@ -19,7 +19,7 @@ class UserController extends Controller
      * @param string $condition 额外条件,必须是符合solr查询语法 类似 title:xxxx AND price:[200 TO 200]
      * @return json $ids 商品id的json形式
      */
-    public function actionId($id ="", $row = 1, $currentDate = 1, $like = '')
+    public function actionId($id, $row = 1, $currentDate = 1, $like = '')
     {
         $userinfoDao = UserinfoDao::model() -> findByPk($id);
         if($userinfoDao == null || !array_key_exists('weight', $userinfoDao -> getAttributes())) /* 数据库中没有此用户*/
@@ -28,7 +28,6 @@ class UserController extends Controller
         {
             $weight = CJSON::decode($userinfoDao -> weight);
             $result = $this -> getIdsByWeight($row,$weight, $like);
-            exit;
         }
         Yii::app() -> end(
             CJSON::encode($result)
@@ -89,13 +88,15 @@ class UserController extends Controller
      * @param string $like 附加条件
      * @return array $ids;
      */
-    protected function noUserinfo($row, $like)
+    protected function noUserinfo($row, $like = "*")
     {
         $query = "timestamp:[" . date('Ymd',strtotime('-1 day',time())) . ' TO ' . date('Ymd',time()) . ']';
         if($like != '')
             $query .= ' AND ( id:*'.$like.'* )';
         $criteria = new ASolrCriteria();
         $criteria -> query =  $query;
+
+
         $criteria -> setLimit($row);
         $adOrderItemObjs = AdOrderItemDao::model() -> findAll($criteria);
 
